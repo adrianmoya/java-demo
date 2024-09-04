@@ -1,5 +1,3 @@
 package com.adrianmoya.demo.model;
 
-public class ProcessResponse {
-
-}
+public record ProcessResponse (String message) {}

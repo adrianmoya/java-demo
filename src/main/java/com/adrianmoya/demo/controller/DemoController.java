@@ -17,6 +17,6 @@ public class DemoController {
 
     @PostMapping
     public ResponseEntity<ProcessResponse> process() {
-        return ResponseEntity.ok(new ProcessResponse());
+        return ResponseEntity.ok(new ProcessResponse("Hello"));
     }
 }
