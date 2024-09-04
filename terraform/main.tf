@@ -7,6 +7,11 @@ terraform {
   }
 }
 
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+}
+
 resource "azurerm_resource_group" "java-demo" {
   name     = var.resource_group
   location = var.location
