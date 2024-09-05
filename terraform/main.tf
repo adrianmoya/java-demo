@@ -10,7 +10,6 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
-  use_msi = true
 }
 
 resource "azurerm_resource_group" "java-demo" {
