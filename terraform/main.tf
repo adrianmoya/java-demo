@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "java-demo" {
 }
 
 resource "azurerm_log_analytics_workspace" "java-demo" {
-  name                = "acctest-01"
+  name                = "java-demo-log"
   location            = azurerm_resource_group.java-demo.location
   resource_group_name = azurerm_resource_group.java-demo.name
   sku                 = "PerGB2018"
