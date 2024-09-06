@@ -1,40 +1,25 @@
-name: TERRAFORM
+on: [push]
+name: Linux_Container_Workflow
 
-on:
-  push:
-    branches: [ main ]
-    paths:
-    - 'terraform/**'
-  pull_request:
-    branches: [ main ]
-    paths:
-    - 'terraform/**'
-
-  workflow_dispatch:
 jobs:
-  terraform:
-    runs-on: ubuntu-latest
-
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
-    defaults:
-      run:
-        working-directory: ./terraform
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v3.1.2
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Plan
-        run: terraform plan
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@main
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.AZURE_CLIENT_ID }}
+            password: ${{ secrets.AZURE_CLIENT_SECRET }}
+        - run: |
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/java-demo:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/java-demo:${{ github.sha }}
