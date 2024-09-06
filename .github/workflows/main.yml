@@ -1,13 +1,18 @@
 on: [push]
-name: Build & Push Image
+name: Build & Push Container Image
 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
-        # checkout the repo
+
         - name: 'Checkout GitHub Action'
           uses: actions/checkout@main
+
+        - uses: actions/setup-java@v4
+          with:
+            distribution: 'temurin'
+            java-version: '21'
 
         - name: Setup Gradle
           uses: gradle/actions/setup-gradle@v3
