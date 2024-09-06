@@ -35,18 +35,3 @@ resource "azurerm_container_app_environment" "java-demo" {
   resource_group_name        = azurerm_resource_group.java-demo.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.java-demo.id
 }
-resource "azurerm_container_app" "java-demo" {
-  name                         = "java-demo-app"
-  container_app_environment_id = azurerm_container_app_environment.java-demo.id
-  resource_group_name          = azurerm_resource_group.java-demo.name
-  revision_mode                = "Single"
-
-  template {
-    container {
-      name   = "examplecontainerapp"
-      image  = "mcr.microsoft.com/k8se/quickstart:latest"
-      cpu    = 0.25
-      memory = "0.5Gi"
-    }
-  }
-}
